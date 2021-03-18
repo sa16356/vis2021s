@@ -1,0 +1,29 @@
+#footer {
+  background: #323137;
+  padding-top: 70px;
+  padding-bottom: 160px;
+  color: #d1d2d8;
+}
+
+.team-bio {
+  margin-bottom: 30px;
+}
+
+#footer-logo {
+  margin-bottom: 20px;
+}
+
+#footer-content {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-column-gap: 20px;
+}
+
+.team-bio {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  grid-column-gap: 40px;
+}
