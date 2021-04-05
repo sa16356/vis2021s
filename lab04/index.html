@@ -90,11 +90,15 @@ https://www.oxxostudio.tw/articles/201501/svg-d3-13-csv.html
                     .append("tr")
 
                     .selectAll("td")
-                    .data(function (d) { return d; })
-                    .enter()
-                    .append("td")
-                    .attr("src", function (d, i) { if (d == "1") return "92.png"; else return "93.png"; })
-                    .text(function (d) { return d; });
+                   .data(function(d) { return d; }).enter()
+                        .append("td") 
+                        .text(function(d, i) {if(d!=0&&d!=1||d==1&&i==0)return d;})
+                        .append("img")
+                        .attr("src", function(d, i) { 
+                        if (d==1&&i!=0) && (d!="")return "./92.png"
+                        if d==0 && d!=""return "./93.png";})
+                        .attr("width",  function(d,i) { if (d==1&&i!=0 || d==0 && d!="")return 60;})
+                        .attr("height", function(d,i) { if (d==1&&i!=0 || d==0 && d!="")return 60;});
             });
         </script>
     </body>
