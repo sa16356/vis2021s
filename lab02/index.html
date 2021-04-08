@@ -119,43 +119,65 @@
                         treemapContainer.appendChild(node)
                     })
 				})
-
-				document.getElementById('dropfile').addEventListener('dragover',function(evt){
-					evt.preventDefault()
-				})
-
-				document.getElementById('dropfile').addEventListener('drop', function(evt){
-					evt.preventDefault()
-
-					var files = evt.dataTransfer.files
-
-					if (files.length) {
-                        if (treemapContainer.innerHTML.length) {
-                            treemapContainer.innerHTML = ''
-                        }
-
-                        if (objectKeys.innerHTML.length) {
-                            objectKeys.innerHTML = ''
-						}
-
-						var csvFile = files[0]
-
-						//讀取csv
-						var fr = new FileReader()
-
-                        fr.onload = function(){
-                            dataLoader(fr.result, function(){
-								dataClassifier(objectKeys.value, function(data, layers){
-									node = getNode(data, layers, treemapContainer)
-									treemapContainer.innerHTML = node.innerHTML
-								}) 
-							})			                         
-                        }
-
-						fr.readAsText(csvFile)
+				
+				d3.csv("./地方文物館參觀人次統計表.csv", function(error, vCsvData) {
+					if (error) throw error;
+					csvData=vCsvData;
+					//console.log(csvData)
+					var parsedCSV = d3.csvFormat(csvData);
+					console.log(parsedCSV)
+					if (treemapContainer.innerHTML.length) {
+						treemapContainer.innerHTML = ''
 					}
-				})
-			})
+
+					if (objectKeys.innerHTML.length) {
+						objectKeys.innerHTML = ''
+					}
+					dataLoader(parsedCSV, function(){
+						console.log(parsedCSV)	
+						dataClassifier(objectKeys.value, function(data, layers){
+							node = getNode(data, layers, treemapContainer)
+							treemapContainer.innerHTML = node.innerHTML
+						}) 
+					})			
+				});
+
+// 				document.getElementById('dropfile').addEventListener('dragover',function(evt){
+// 					evt.preventDefault()
+// 				})
+
+// 				document.getElementById('dropfile').addEventListener('drop', function(evt){
+// 					evt.preventDefault()
+
+// 					var files = evt.dataTransfer.files
+
+// 					if (files.length) {
+//                         if (treemapContainer.innerHTML.length) {
+//                             treemapContainer.innerHTML = ''
+//                         }
+
+//                         if (objectKeys.innerHTML.length) {
+//                             objectKeys.innerHTML = ''
+// 						}
+
+// 						var csvFile = files[0]
+
+// 						//讀取csv
+// 						var fr = new FileReader()
+
+//                         fr.onload = function(){
+//                             dataLoader(fr.result, function(){
+// 								dataClassifier(objectKeys.value, function(data, layers){
+// 									node = getNode(data, layers, treemapContainer)
+// 									treemapContainer.innerHTML = node.innerHTML
+// 								}) 
+// 							})			                         
+//                         }
+
+// 						fr.readAsText(csvFile)
+// 					}
+// 				})
+// 			})
 		</script>
 
 	</body>
