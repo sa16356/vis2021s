@@ -9,18 +9,21 @@
 		<style>
       		@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap');
 
-		    div, ul {
+		    div, 
+		    ul {
 		      border: solid black 1px;
 		      margin: 5px;
 		      padding: 10px;
 		      background-color: rgba(255, 255, 128, 0.1);
 		    }
 
-		    div:hover, ul:hover {
+		    div:hover, 
+		    ul:hover {
 		      background-color: rgba(255, 128, 128, 0.1);
 		    }
 
-			html, body {
+			html, 
+			body {
 				height: 100%;
 				width: 100%;
 				padding: 0;
@@ -47,15 +50,18 @@
 		        font-family: 'Noto Serif JP', serif;
 		        margin-bottom: 10px;
 			}
+			
 			#dropfile:hover {
 			    background-color: rgba(128, 255, 255, 0.1);
 			}
+			
 			@keyframes oxxo{
 			    from {
 			        border-style: dotted;;
 			        border-color: blue;
 			        color: blue;
 			    }
+			    
 			    to {
 			        border-style: solid;
 			        border-color: red;
@@ -150,7 +156,7 @@
 					evt.preventDefault()
 
 					var files = evt.dataTransfer.files
-
+					console.log(files);
 					if (files.length) {
                         if (treemapContainer.innerHTML.length) {
                             treemapContainer.innerHTML = ''
@@ -177,7 +183,37 @@
 						fr.readAsText(csvFile)
 					}
 				})
+				readTextFile('1.csv');
 			})
+			
+			function readTextFile(file) {
+			var treemapContainer = document.getElementById('treemap')
+			var objectKeys = document.getElementById("ObjectKeys")
+			var rawFile = new XMLHttpRequest();
+			rawFile.open("GET", file, false);
+			rawFile.onreadystatechange = function () {
+				if (rawFile.readyState === 4) {
+					if (rawFile.status === 200 || rawFile.status == 0) {
+						if (treemapContainer.innerHTML.length) {
+							treemapContainer.innerHTML = ''
+						}
+
+						if (objectKeys.innerHTML.length) {
+							objectKeys.innerHTML = ''
+						}
+						var allText = rawFile.responseText;
+						objectKeys.value = ''
+						dataLoader(allText, function () {
+							dataClassifier(objectKeys.value, function (data, layers) {
+								node = getNode(data, layers, treemapContainer)
+								treemapContainer.innerHTML = node.innerHTML
+							})
+						})
+					}
+				}
+			}
+			rawFile.send(null);
+		}
 		</script>
 
 	</body>
