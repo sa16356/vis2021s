@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>D3 Page Template</title>
-    <script src="http://d3js.org/d3.v6.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
+    <title>Lab</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
+    <style type = "text/css">
+		div.bar{
+		border : 1px black solid;
+		padding : 2px;
+		margin : 5px 10px 5px 5px;	
+		display : inline-block;
+		width:50px;
+		height:100px;
+		background-color:red;
+		};
+		body{
+		border : 5px red solid;
+		padding : 100px;
+		};
+    </style>
 </head>
 <body>
+
+
     <script type="text/javascript">
-      // Your beautiful D3 code will go here
+	d3.text("data.csv",function(data){
+		var parsedCSV = d3.csv.parseRows(data);		
+		d3.select("body")
+			.selectAll("div")
+			.data(parsedCSV)
+			.enter()
+			.append("div")
+			.filter(function(d,i){
+				return  (i!=0);
+			})
+			.attr("class","bar")
+			.style("height",function(d){			
+				return d[1] + "px";
+			});		
+	});
     </script>
-  </body>
-</html>
+  </html>
   
