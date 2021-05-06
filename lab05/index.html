@@ -3,42 +3,118 @@
 <head>
     <meta charset="utf-8">
     <title>Lab</title>
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
-    <style type = "text/css">
-		div.bar{
-		border : 1px black solid;
-		padding : 2px;
-		margin : 5px 10px 5px 5px;	
-		display : inline-block;
-		width:50px;
-		height:100px;
-		background-color:red;
-		};
-		body{
-		border : 5px red solid;
-		padding : 100px;
-		};
+    <script src="https://d3js.org/d3.v6.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
+    <style type="text/css">
+
+        .bar {
+            fill: steelblue;
+        }
     </style>
 </head>
 <body>
-
-
     <script type="text/javascript">
-	d3.text("data.csv",function(data){
-		var parsedCSV = d3.csv.parseRows(data);		
-		d3.select("body")
-			.selectAll("div")
-			.data(parsedCSV)
-			.enter()
-			.append("div")
-			.filter(function(d,i){
-				return  (i!=0);
-			})
-			.attr("class","bar")
-			.style("height",function(d){			
-				return d[1] + "px";
-			});		
-	});
+
+        var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+            width = window.innerWidth*2/3,
+            height = window.innerHeight*2/3,
+            fontSize = 15;
+
+        var svg = d3.select("body").append("svg")
+            .attr("width", width + margin.right + margin.left)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")// used for x, y lengend
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        var rowConverter = function (d) {
+            return {
+                Date: parseInt(d.組界),
+                Amount: parseInt(d.頻率)
+            };
+        }
+
+        d3.csv("./data.csv", rowConverter).then(function (data) {
+            data.forEach(function (d) {
+                d.Date = +d.Date;
+            });
+            // set the ranges
+            var x = d3.scaleBand()
+                .range([0, width])
+                .padding(0.2);
+            var y = d3.scaleLinear()
+                .range([height, 0]);
+
+            // Scale the range of the data in the domains
+            x.domain(data.map(function (d) { return d.Date; }));
+            y.domain([0, d3.max(data, function (d) { return d.Amount; })]);
+
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d) {
+                    return x(d.Date)
+                })
+                .attr("y", function (d) {
+                    return height
+                })
+                .attr("width", x.bandwidth())
+                .attr("height", 0);
+
+            svg.selectAll("text")
+                .data(data)
+                .enter()
+                .append("text")
+                .text(function (d) {
+                    return d.Amount;
+                })
+                .attr("id","amt")
+                .attr("x", function (d) {
+                    return x(d.Date) + (x.bandwidth()) / 2 - fontSize / 2;
+                })
+                .attr("y", height - fontSize / 2)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", 0 + "px");
+
+            svg.append("g")
+                .attr("id","xaxis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
+
+            // add the y Axis
+            svg.append("g")
+                .attr("id", "yaxis")
+                .call(d3.axisLeft(y));
+
+            // Animation
+            svg.selectAll("#amt")
+                .transition()
+                .duration(800)
+                .attr("font-size", fontSize + "px");
+          
+            svg.select("#xaxis")
+                .selectAll("text")
+                .transition()
+                .duration(800)
+                .attr("transform", "rotate(36)");
+
+            svg.select("#yaxis")
+                .selectAll("text")
+                .transition()
+                .duration(800)
+                .attr("transform", "rotate(36)");
+
+            svg.selectAll("rect")
+                .transition()
+                .duration(800)
+                .attr("y", function (d) { return y(d.Amount); })
+                .attr("height", function (d) { return height - y(d.Amount); })
+
+
+            console.log(data);
+        });
+
     </script>
+    </body>
   </html>
-  
