@@ -39,10 +39,15 @@
 
 <body>
   <script>
-    var margin = { top: 20, right: 100, bottom: 35, left: 30 };
+    //var margin = { top: 20, right: 100, bottom: 35, left: 30 };
 
-    var width = 6400 - margin.left - margin.right,
-      height = 600 - margin.top - margin.bottom;
+    //var width = 6400 - margin.left - margin.right,
+    //  height = 600 - margin.top - margin.bottom;
+    var margin = {top: 20, right: 60, bottom: 35, left: 30};
+
+	var width = 1500 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+    
     var xyIni = 100;
 
     var svg = d3.select("body")
@@ -74,14 +79,15 @@
       // Set x, y and colors
       var x = d3.scale.ordinal()
         .domain(dataset[0].map(function (d) { return d.x; }))
-        .rangeRoundBands([-50, width - 10], 0.02);
+        .rangeRoundBands([10, width-10], 0.02);
+
+       // .rangeRoundBands([-50, width - 10], 0.02);
 
       var y = d3.scale.linear()
         .domain([0, d3.max(dataset, function (d) { return d3.max(d, function (d) { return d.y0 + d.y; }); })])
         .range([height, 0]);
 
-      var colors = ["#e74c3c", "#f1c40f", "#3498db", "#2ecc71", "#8e44ad"];
-/*#cd84f1", "#ffcccc", "#ff4d4d", "#ffaf40", "#fffa65",#32ff7e", "#7efff5", "#18dcff", "#7d5fff","#ff3838","#53c653", "#ff8000"*/
+var colors = ["b33040", "#d25c4d", "#f2b447", "#d9d574", "#e0e0f0"];
 
       // Define and draw axes
       var yAxis = d3.svg.axis()
@@ -94,6 +100,7 @@
       var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom")
+		.tickFormat( function(i) { return i } );
 
       svg.append("g")
         .attr("class", "y axis")
@@ -106,7 +113,7 @@
         .attr("class", "x axis")
         .attr("transform", "translate(" + xyIni + "," + height + ")")
         .style("fill", "black")
-	    .style("font-size","11px")
+	    .style("font-size","9px")
         .call(xAxis);
 
 
@@ -145,7 +152,7 @@
         .attr("transform", function (d, i) { return "translate(30," + i * 19 + ")"; });
 
       legend.append("rect")
-        .attr("x", - 18)
+        .attr("x",width - 18)
         .attr("width", 18)
         .attr("height", 18)
         .style("fill", function (d, i) { return colors.slice().reverse()[i]; });
@@ -157,11 +164,11 @@
         .style("text-anchor", "start")
         .text(function (d, i) {
           switch (i) {
-            case 0: return "國文";
-            case 1: return "英文";
-            case 2: return "法文";
-            case 3: return "德文";
-            case 4: return "日文";
+			case 0: return "日文";
+			case 1: return "德文";
+			case 2: return "法文";
+			case 3: return "英文";
+			case 4: return "國文";
           }
         });
 
