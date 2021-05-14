@@ -39,14 +39,14 @@
 
 <body>
   <script>
-    //var margin = { top: 20, right: 100, bottom: 35, left: 30 };
+    var margin = { top: 20, right: 100, bottom: 35, left: 30 };
 
-    //var width = 6400 - margin.left - margin.right,
-    //  height = 600 - margin.top - margin.bottom;
-    var margin = {top: 20, right: 60, bottom: 35, left: 30};
+    var width = 6400 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
+    //var margin = {top: 20, right: 60, bottom: 35, left: 30};
 
-	var width = 1500 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+	//var width = 1500 - margin.left - margin.right,
+    //height = 600 - margin.top - margin.bottom;
     
     var xyIni = 100;
 
@@ -79,9 +79,7 @@
       // Set x, y and colors
       var x = d3.scale.ordinal()
         .domain(dataset[0].map(function (d) { return d.x; }))
-        .rangeRoundBands([10, width-10], 0.02);
-
-       // .rangeRoundBands([-50, width - 10], 0.02);
+       .rangeRoundBands([-50, width - 10], 0.02);
 
       var y = d3.scale.linear()
         .domain([0, d3.max(dataset, function (d) { return d3.max(d, function (d) { return d.y0 + d.y; }); })])
