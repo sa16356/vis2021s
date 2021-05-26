@@ -66,26 +66,26 @@
       <hr>
       Drag:
       </br>
-      <div class="dragdrop" id="dragHuang"></div>
-      <div class="dragdrop" id="dragZhen"></div>
-      <div class="dragdrop" id="dragAn"></div>
+      <div class="dragdrop" id="A"></div>
+      <div class="dragdrop" id="B"></div>
+      <div class="dragdrop" id="C"></div>
       </br>
       Drop:
       </br>
-      <div class="dragdrop" id="dropHuang"></div>
-      <div class="dragdrop" id="dropZhen"></div>
-      <div class="dragdrop" id="dropAn"></div>
+      <div class="dragdrop" id="Q"></div>
+      <div class="dragdrop" id="W"></div>
+      <div class="dragdrop" id="E"></div>
     </div>
     
     <script type="text/javascript">
       // Your beautiful D3 code will go here
       window.onload = () => {
-        loadWordFromPath('./lin.svg', '#dragHuang', 0);
-        loadWordFromPath('./jian.svg', '#dragZhen', 0);
-        loadWordFromPath('./pai.svg', '#dragAn', 0);
-        loadWordFromPath('./lin.svg', '#dropHuang', 1);
-        loadWordFromPath('./jian.svg', '#dropZhen', 1);
-        loadWordFromPath('./pai.svg', '#dropAn', 1);
+        loadWordFromPath('./lin.svg', '#A', 0);
+        loadWordFromPath('./jian.svg', '#B', 0);
+        loadWordFromPath('./pai.svg', '#C', 0);
+        loadWordFromPath('./lin.svg', '#Q', 1);
+        loadWordFromPath('./jian.svg', '#W', 1);
+        loadWordFromPath('./pai.svg', '#E', 1);
 
         document.getElementById('dropfile').addEventListener('dragover', (evt) => {
           evt.preventDefault()
