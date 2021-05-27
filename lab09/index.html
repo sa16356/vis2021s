@@ -51,7 +51,7 @@ svg {
     </div>
     <script type="text/javascript">
     const WIDTH = 1280;
-const HEIGHT = 720;
+	const HEIGHT = 720;
 
 var myArray = [];
 var updateClock;
@@ -68,9 +68,8 @@ window.addEventListener('load', function() {
         clearInterval(updateClock);
     };
 
-    d3.text('video.srt').then(function(data) {
+    d3.text('1.srt').then(function(data) {
         var parsedCSV = d3.csvParseRows(data);
-
         var key;
         var begin;
         var end;
@@ -116,7 +115,7 @@ window.addEventListener('load', function() {
             .attr('width', WIDTH)
             .attr('height', HEIGHT)
             .append('text')
-            .text('播放')
+            .text('Play')
             .attr('x', WIDTH / 2)
             .attr('y', HEIGHT / 2)
             .attr('font-size', '60pt')
@@ -125,7 +124,7 @@ window.addEventListener('load', function() {
                 document.getElementById('video').style.display = 'inline';
                 document.getElementById('video').play();
                 playSubtitle();
-                playTime();
+                //playTime();
             });
     });
 });
@@ -149,7 +148,7 @@ function playSubtitle() {
             return d.subtitle.includes('迷失') ? 'red' : 'none';
         })
         .attr('x', WIDTH / 2)
-        .attr('y', HEIGHT - 25)
+        .attr('y', 700)
         .attr('text-anchor', 'middle')
         .attr('opacity', 0)
         .transition()
@@ -168,27 +167,27 @@ function playSubtitle() {
         .attr('opacity', 0);
 }
 
-function playTime() {
-    var currentTime = 0;
+//function playTime() {
+//    var currentTime = 0;
 
-    var duration = parseInt(document.getElementById('video').duration);
+//    var duration = parseInt(document.getElementById('video').duration);
 
-    updateClock = setInterval(() => {
-        var clockCurrentTime = getClock(currentTime);
-        var clockDuration = getClock(duration);
-        d3.select('#subtitle')
-            .append('text')
-            .text(clockCurrentTime + ' / ' + clockDuration)
-            .attr('x', WIDTH - 120)
-            .attr('y', 42)
-            .attr('opacity', 1)
-            .transition()
-            .delay(1000)
-            .duration(0)
-            .remove();
-        ++currentTime;
-    }, 1000);
-}
+//    updateClock = setInterval(() => {
+//        var clockCurrentTime = getClock(currentTime);
+//        var clockDuration = getClock(duration);
+//        d3.select('#subtitle')
+//            .append('text')
+//            .text(clockCurrentTime + ' / ' + clockDuration)
+//            .attr('x', WIDTH - 120)
+//            .attr('y', 42)
+//            .attr('opacity', 1)
+//            .transition()
+//            .delay(1000)
+//            .duration(0)
+//            .remove();
+//        ++currentTime;
+//    }, 1000);
+//}
 
 function getClock(time) {
     if (time % 60 < 10) {
