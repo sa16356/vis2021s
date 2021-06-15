@@ -27,6 +27,17 @@
         video:hover {
             box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
         }
+        
+        .path {
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: dash 5s linear forwards;
+        }
+        @keyframes dash {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
     </style>
     <script src="http://d3js.org/d3.v6.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
 </head>
@@ -61,11 +72,118 @@
     </div>
 
     <div>
-      Drag and Drop 展示區 (接收任何SVG)
+      <svg id="svg1" height="250" width="250">
+      </svg>
+      <svg id="svg2" height="250" width="250">
+      </svg>
+      <svg id="svg3" height="250" width="250">
+      </svg>
     </div>
 
     <script type="text/javascript">
-      // Your beautiful D3 code will go here
+      var line = d3.line();
+     var first = [
+                "M 2,96 15.536946,95.527094 105,68",
+                "M 76,20 88,30 81.428571,34.995074 80,76 77.330049,186.00985 65,181 88,204",
+                "m 73,83 c 0,0 -1.390933,18.06365 -7.827241,29.21166 -6.436309,11.14802 -42.384582,56.14302 -42.384582,56.14302",
+                "m 73,118 20,10",
+                "M 109,89 199.02463,57.694581 218,59",
+                "m 143,6 15,10",
+                "m 158,16 -3,57 3.66995,140.75369 L 134,187",
+                "m 156,94 c 0,0 -46.24631,63.09852 -59.12315,68.04926",
+                "M 156,94 197.44828,147.5468 253,154"
+          ]
+
+    var middle = ["m 94,20 7,8 -60,63",
+                  "m 27.589873,129.62025 20.41519,-10.04557 38.886076,-22.035439 v 0",
+                  "m 125,42 21,9 -26.10837,7.955665",
+                  "M 62.512315,97.73399 78.906404,99.625616 114.53202,81.655172",
+                  "m 55,144 c 0,0 0,13 22,-3",
+                  "m 86,125 14,7 30,-21 9,11 -69,50",
+                  "m 52,192 c 0,0 20.285714,8.19704 80.50246,-22.69951",
+                  "M 167.49754,86.384236 174,120 l -7.133,-7.44828",
+                  "m 200.91626,18.285714 4.41379,6.935961 c 0,0 -5.35961,178.443345 5.35961,191.054185",
+                  "M 210.68966,216.27586 172,187"
+]
+
+    var last = ["M 23.053165,26.572152 56.43038,40.506329 66,44 57.078481,43.422785 H 35.043038 v 0",
+                "M -6.435443,92.03038 28.237975,98.187342 41,94 54,96 27.589873,107.90886 v 0",
+                "M 85.270886,102.4 58.050633,151.33165 41.848101,181.46835 37.311392,194.75443 39,204 l -9,1 -6,-12 3,-12 1.562025,-12.16962 v 0",
+                "m 130.8919,35.222974 -33.8854,9.80893",
+                "M 98.56702,84.267622 129.77725,72.675251",
+                "M 66,118 77.611575,116.5925 137.35687,97.420505 151,95",
+                "m 110.15939,56.847205 4.4586,6.019116 c 0,0 9.19085,106.337269 -27.61799,112.133679",
+                "m 156.08301,35.222974 c 0,0 16.05098,4.235674 49.04465,-11.146511",
+                "M 205.12766,24.076463 215,28",
+                "m 148,66 66.04487,-10.936236 -3.12103,2.898092",
+                "m 165.89194,88.949156 c 0,0 9.14014,3.789814 27.86628,-8.025487 L 202,83",
+                "m 126,125 93,-23 23.57994,5.22943",
+                "m 176.36966,43.025532 3.78981,6.464976 2.45224,155.605292 -2.45224,-0.22293 L 196,228"
+              ]
+
+    // d3.select("#svg1")
+    // .append('path')
+    // .attr('class', 'path')
+    // .attr('fill', "none")
+    // .attr('stroke', "black")
+    // .attr('stroke-width', "6.103")
+    // .attr('d', "M 78,20.307692 32.153846,92.615385 9,115")
+    // d3.select("#svg1")
+    // .append('path')
+    // .transition()
+    // .delay(1000)
+    // .attr('class', 'path')
+    // .attr('fill', "none")
+    // .attr('stroke', "black")
+    // .attr('stroke-width', "6.103")
+    // .attr('d', "m 60.710678,48.953546 0.217571,34.376269 -1.74057,31.982985 -1.522999,52.86983 15.665135,18.71113")
+
+
+const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+async function first_N(){
+    for (var i = 0; i < first.length; i++) {
+      d3.select("#svg1")
+      .append('path')
+      .attr('class', 'path')
+      .attr('fill', "none")
+      .attr('stroke', "black")
+      .attr('stroke-width', "6.103")
+      .attr('d', first[i]);
+      console.log(i);
+      await sleep(500);
+    }
+}
+first_N()
+
+async function middle_N(){
+    for (var j = 0; j < middle.length; j++) {
+        d3.select("#svg2")
+        .append('path')
+        .attr('class', 'path')
+        .attr('fill', "none")
+        .attr('stroke', "black")
+        .attr('stroke-width', "6.103")
+        .attr('d', middle[j]);
+        console.log(j);
+        await sleep(500);
+    }
+}
+middle_N()
+
+async function last_N(){
+    for (var k = 0; k < last.length; k++) {
+      d3.select("#svg3")
+      .append('path')
+      .attr('class', 'path')
+      .attr('fill', "none")
+      .attr('stroke', "black")
+      .attr('stroke-width', "6.103")
+      .attr('d', last[k]);
+      console.log(k);
+      await sleep(500);
+    }
+}
+last_N()
     </script>
   </html>
   

@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+		
+		<!-- 轉換 topojson 為 Geojson 的函式庫 -->
+        <script src="https://d3js.org/topojson.v1.min.js"></script>
+        <script src="getMap.js"></script>
+
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                text-align: center;
+            }
+
+            #info-box {
+                display: none;
+                align-items: center;
+                justify-content: center;
+                z-index: 99;
+                font-size: 30px;
+                border-style: solid;
+                border-radius: 5px;
+                height: 40px;
+                width: 280px;
+                position:absolute;
+                opacity: .5;
+                background-color: black;
+                color: white;
+            }
+
+            #info-box img {
+                margin-right: 10px;
+            }
+
+            #city-info{
+                position:absolute;
+                right: 10px;
+                top: 100px;
+                border-style: solid;
+                height: 480px;
+                width: 420px;
+                text-align: left;
+            }
+
+            .info {
+                font-size: 30px;
+                margin: 5px 5px;
+
+            }
+
+            .info-title {
+                font-weight:bold;
+                font-size: 40px;
+            }
+
+            .info-img {
+                height: 100px;
+                width: 120px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1 id="city-title">台灣</h1>
+        <div id="map" class="container">
+        </div>
+
+        <div id="info-box">
+            台灣
+        </div>
+
+        <div id="city-info">
+            <div class="info info-title" id="country-name">台灣</div>
+            <div class="info">英文名: <span id="country-eng"></span></div>
+            <div class="info">政府所在地: <span id="country-govloc"></span></div>
+            <div class="info">人口: <span id="country-pup"></span></div>
+            <div class="info">面積: <span id="country-area"></span></div>
+            <div class="info">類型: <span id="country-type"></span></div>
+            <div class="info info-img" ><div id="country-flag"></div></div>
+        </div>
+
+        <script>
+            /**
+             * BASE_COLOR 為預設地圖顯示的顏色
+             * */
+            var BASE_COLOR = '#008000';
+
+            /**
+             * 請務必使用Topojson格式的檔案，不要用GeoJson
+             * 於https://mapshaper.org/轉換完成之後，請不要更改檔名
+            */
+            window.onload = function(){
+                getMap('COUNTY_MOI_1090820.json', 'city-info.json', function(data){   
+                    document.getElementById('map').appendChild(data);
+                })
+            }
+
+        </script>
+    </body>
+</html>
