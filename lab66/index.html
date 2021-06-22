@@ -1,14 +1,166 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
-  <head>
+
+<html>
+
+<head>
     <meta charset="utf-8">
-    <title>D3 Page Template</title>
-    <script src="http://d3js.org/d3.v6.min.js" charset="utf-8"></script> <!-- v6.5.0 -->
+
+    <style>
+        html,
+        body {
+            height: 200%;
+        }
+        #training-section, #testing-section {
+            height: 100%;
+			overflow: hidden;
+        }
+
+        #train-vs-test {
+            height: 100%;
+            position: fixed;
+            max-width: 100%;
+        }
+
+        .padding {
+            height: 100%;
+        }
+
+        #right {
+            width: 60%;
+            height: 100%;
+            position: relative;
+            float: right;
+        }
+        #left {
+            width: 40%;
+            height: 100%;
+            float: left;
+        }
+    </style>
 </head>
+
 <body>
-    <script type="text/javascript">
-      // Your beautiful D3 code will go here
-    </script>
-  </body>
+        <div id="right">
+            <div id="train-vs-test"></div>
+        </div>
+
+        <div id="left">
+            <div id="training-section">
+				<h1>
+					訓練資料集的部分
+				</h1>
+				<p>该数据集最初来自美国国家糖尿病、消化和肾脏疾病研究所。该数据集的目标是根据数据集中包含的某些诊断测量值，诊断性地预测患者是否患有糖尿病。该数据集由多个医学预测变量和一个目标变量糖尿病组成。 </p>
+				
+				<p>预测变量共有十数个：包括患者的胆固醇、葡萄糖、怀孕次数、 以及身体数据，如BMI、体重、年龄、身高、体重、腰臀比等。 </p>
+				
+				<p>我们能否根据此数据集建立一个机器学习模型来准确预测数据集中的患者是否患有糖尿病呢？ </p>
+				
+				<h1>
+					測試資料集的部分
+				</h1>
+				
+				<p>该数据集共有390条数据，其中70%作为训练资料集，共273条，30%为测试资料集，共117条。 </p>
+				
+				<p>预测的准确率约为88%，我们猜测是数据集的资料偏少，如果可以获得更多的数据，那么准确率将会进一步的提升。 </p>
+            </div>
+            <div id="testing-section">
+
+            </div>
+        </div>
+
+        <script src="./lib/d3.v3.min.js"></script>
+        <script src="./lib/binarydecisiontree.min.js"></script>
+
+        <script>
+            var Lipsum = "";
+
+            window.onload = function () {
+                function resizeRight(){
+                    d3.select("#train-vs-test")
+                        .style("width", d3.select("#right").node().clientWidth + "px")
+                    ;
+                }
+
+                resizeRight();
+
+                d3.select(window)
+                    .on("resize", function(){ resizeRight() })
+                ;
+
+                d3.select("#training-section")
+                    .selectAll("p")
+                    .data(d3.range(1, 2))
+                    .enter()
+                    .append("p")
+                    .text(Lipsum)
+                ;
+
+                d3.select("#testing-section")
+                    .selectAll("p")
+                    .data(d3.range(1, 2))
+                    .enter()
+                    .append("p")
+                    .text(Lipsum)
+                ;
+				
+				d3.select("#training-section")
+                    .selectAll("img")
+					.data(1)
+					.enter()
+					.append("img")
+					.attr("src", function(d){ return "media/" + d + ".png"})
+                    .style('height', '350px')
+                    .style('width', '350px')
+                ;
+
+                d3.select("#testing-section")
+                    .selectAll("img")
+					.data(1)
+					.enter()
+					.append("img")
+					.attr("src", function(d){ return "media/" + d + ".png"})
+                    .style('height', '350px')
+                    .style('width', '350px')
+                ;
+				
+				
+
+                var bdt = new BinaryDecisionTree({
+                    el: "#train-vs-test",
+                    trainingSection: "#training-section",
+                    testSection: "#testing-section",
+                    
+					/**
+                     * 預設會讓小球在上方排排站
+                     * 如果不要排排站的話，必須要把這個 paramater 設成 false
+                     * 如果要排排站的話，直接註解掉這行就行
+                    */
+                    //flood: false
+                });
+
+                bdt.setDataFromJson("./dataset.json", function(){
+                    bdt.install();
+                    bdt.play();
+                })
+
+                /**
+                 * or
+                 * bdt.setDataFromObject({ 
+                 *  tree_data: tree_data,
+                 *  tree_training_set: tree_training_set,
+                 *  tree_stats: tree_stats, 
+                 *  tree_test_set: tree_test_set, 
+                 *  test_stats : test_stats
+                 * })
+                 * 同步函式，不需要 callback
+                 * bdt.install();
+                 * bdt.play();
+                */
+            }
+        </script>
+
+</body>
+
+
+
 </html>
-  
